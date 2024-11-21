@@ -1,12 +1,9 @@
-const StyleDictionary = require("style-dictionary");
-const CSSSetsFormatter = require("../index").CSSSetsFormatter;
-const NameKebabTransfom = require("../index").NameKebabTransfom;
-const AttributeSetsTransform = require("../index").AttributeSetsTransform;
-const CSSOpenTypeTransform = require("../index").CSSOpenTypeTransform;
-const helpers = require("./helpers");
+import StyleDictionary from "style-dictionary";
 
-const fs = require("fs");
-const path = require("path");
+import { CSSSetsFormatter, NameKebabTransfom, AttributeSetsTransform, CSSOpenTypeTransform } from "../index";
+import { buildPlatforms, outputDir, clearOutput } from "./helpers";
+
+import { readFile } from "fs/promises";
 
 StyleDictionary.registerTransform(NameKebabTransfom);
 StyleDictionary.registerTransform(AttributeSetsTransform);
@@ -18,7 +15,7 @@ const generateConfig = (filename) => {
     source: [`tests/fixtures/${filename}.json`],
     platforms: {
       CSS: {
-        buildPath: helpers.outputDir,
+        buildPath: outputDir,
         transforms: [AttributeSetsTransform.name, NameKebabTransfom.name, CSSOpenTypeTransform.name],
         files: [
           {
@@ -47,115 +44,85 @@ const generateConfig = (filename) => {
   };
 };
 
-beforeEach(() => {
-  helpers.clearOutput();
+beforeAll(() => {
+  return clearOutput();
 });
 
-afterEach(() => {
-  // helpers.clearOutput();
+afterAll(() => {
+  return clearOutput();
 });
 
-test("basic data with sets keyword in path should provide basic css", () => {
+test("basic data with sets keyword in path should provide basic css", async () => {
   const filename = "basic";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const result = fs.readFileSync(
-    path.join(helpers.outputDir, `${filename}.css`),
-    {
-      encoding: "utf8",
-    }
-  );
-  const expected = fs.readFileSync(`./tests/expected/${filename}.css`, {
-    encoding: "utf8",
+
+  return buildPlatforms(`${filename}.css`, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}.css`, { encoding: "utf8" });
+
+    expect(result).toEqual(expected);
   });
-  expect(result).toEqual(expected);
 });
 
-test("should handle multi nested reference css", () => {
+test("should handle multi nested reference css", async () => {
   const filename = "multi-depth";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const result = fs.readFileSync(
-    path.join(helpers.outputDir, `${filename}.css`),
-    {
-      encoding: "utf8",
-    }
-  );
-  const expected = fs.readFileSync(`./tests/expected/${filename}.css`, {
-    encoding: "utf8",
+
+  return buildPlatforms(`${filename}.css`, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}.css`, { encoding: "utf8" });
+
+    expect(result).toEqual(expected);
   });
-  expect(result).toEqual(expected);
 });
 
-test("should work with nested sets", () => {
+test("should work with nested sets", async () => {
   const filename = "nest-sets-no-refs";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const result = fs.readFileSync(
-    path.join(helpers.outputDir, `${filename}.css`),
-    {
-      encoding: "utf8",
-    }
-  );
-  const expected = fs.readFileSync(`./tests/expected/${filename}.css`, {
-    encoding: "utf8",
+
+  return buildPlatforms(`${filename}.css`, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}.css`, { encoding: "utf8" });
+
+    expect(result).toEqual(expected);
   });
-  expect(result).toEqual(expected);
 });
 
-test("tokens without sets should still have names", () => {
+test("tokens without sets should still have names", async () => {
   const filename = "multi-ref";
+
   const config = generateConfig(filename);
+
+  /* filter out tokens with sets */
   config.platforms.CSS.files[0].filter = (token) => {
-    return !("sets" in token.attributes);
+    return !("sets" in token.attributes) || token.attributes.sets.length === 0;
   };
+  /* remove sets option */
   delete config.platforms.CSS.files[0].options.sets;
-  const sd = StyleDictionary.extend(config);
-  sd.buildAllPlatforms();
-  const result = fs.readFileSync(
-    path.join(helpers.outputDir, `${filename}.css`),
-    {
-      encoding: "utf8",
-    }
-  );
-  const expected = fs.readFileSync(`./tests/expected/${filename}.css`, {
-    encoding: "utf8",
+
+  return buildPlatforms(`${filename}.css`, config).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}.css`, { encoding: "utf8" });
+
+    expect(result).toEqual(expected);
   });
-  expect(result).toEqual(expected);
 });
 
-test("prefix option should be added to var name", () => {
+test("prefix option should be added to var name", async () => {
   const filename = "multi-depth";
+
   const config = generateConfig(filename);
   config.platforms.CSS.prefix = 'aprefix';
-  const sd = StyleDictionary.extend(config);
-  sd.buildAllPlatforms();
-  const result = fs.readFileSync(
-    path.join(helpers.outputDir, `${filename}.css`),
-    {
-      encoding: "utf8",
-    }
-  );
-  const expected = fs.readFileSync(`./tests/expected/${filename}-prefix.css`, {
-    encoding: "utf8",
+
+  return buildPlatforms(`${filename}.css`, config).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}-prefix.css`, { encoding: "utf8" });
+
+    expect(result).toEqual(expected);
   });
-  expect(result).toEqual(expected);
 });
 
-test("selector option should set rule selector", () => {
+test("selector option should set rule selector", async () => {
   const filename = "multi-depth";
+
   const config = generateConfig(filename);
   config.platforms.CSS.files[0].options.selector = '.aselector';
-  const sd = StyleDictionary.extend(config);
-  sd.buildAllPlatforms();
-  const result = fs.readFileSync(
-    path.join(helpers.outputDir, `${filename}.css`),
-    {
-      encoding: "utf8",
-    }
-  );
-  const expected = fs.readFileSync(`./tests/expected/${filename}-selector.css`, {
-    encoding: "utf8",
+
+  return buildPlatforms(`${filename}.css`, config).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}-selector.css`, { encoding: "utf8" });
+
+    expect(result).toEqual(expected);
   });
-  expect(result).toEqual(expected);
 });

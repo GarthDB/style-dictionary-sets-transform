@@ -1,11 +1,10 @@
-const StyleDictionary = require("style-dictionary");
-const JsonSetsFormatter = require("../index").JsonSetsFormatter;
-const NameKebabTransfom = require("../index").NameKebabTransfom;
-const AttributeSetsTransform = require("../index").AttributeSetsTransform;
-const helpers = require("./helpers");
+import StyleDictionary from "style-dictionary";
 
-const fs = require("fs");
-const path = require("path");
+import { JsonSetsFormatter, NameKebabTransfom, AttributeSetsTransform } from "../index";
+import { buildPlatforms, outputDir, clearOutput } from "./helpers";
+
+import { join } from "path";
+import { readFile } from "fs/promises";
 
 StyleDictionary.registerTransform(NameKebabTransfom);
 StyleDictionary.registerTransform(AttributeSetsTransform);
@@ -16,7 +15,7 @@ const generateConfig = (filename) => {
     source: [`tests/fixtures/${filename}`],
     platforms: {
       JSON: {
-        buildPath: helpers.outputDir,
+        buildPath: outputDir,
         transforms: [AttributeSetsTransform.name, NameKebabTransfom.name],
         files: [
           {
@@ -33,71 +32,73 @@ const generateConfig = (filename) => {
   };
 };
 
-beforeEach(() => {
-  helpers.clearOutput();
+beforeAll(() => {
+  return clearOutput();
 });
 
-afterEach(() => {
-  helpers.clearOutput();
+afterAll(() => {
+  return clearOutput();
 });
 
-test("basic data with sets keyword in path should provide basic values", () => {
+test("basic data with sets keyword in path should provide basic values", async () => {
   const filename = "basic.json";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  const output = sd.exportPlatform('JSON');
-  const expected = helpers.fileToJSON(`./tests/expected/${filename}`);
-  expect(output).toMatchObject(expected);
+
+  return buildPlatforms(filename, generateConfig(filename), "export").then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}`, { encoding: "utf-8" }).then(JSON.parse);
+    expect(result).toMatchObject(expected);
+  });
 });
 
-test("basic data with nests sets keywords in path should provide multiple values to sets attribute", () => {
+test("basic data with nests sets keywords in path should provide multiple values to sets attribute", async () => {
   const filename = "nest-sets-no-refs.json";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  const output = sd.exportPlatform('JSON');
-  const expected = helpers.fileToJSON(`./tests/expected/${filename}`);
-  expect(output).toMatchObject(expected);
+
+  return buildPlatforms(filename, generateConfig(filename), "export").then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}`, { encoding: "utf-8" }).then(JSON.parse);
+    expect(result).toMatchObject(expected);
+  });
 });
 
-test("a ref pointing to a set should include all values", () => {
+test("a ref pointing to a set should include all values", async () => {
   const filename = "set-in-ref.json";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const expected = helpers.fileToJSON(`./tests/expected/${filename}`);
-  const result = helpers.fileToJSON(path.join(helpers.outputDir, filename));
-  expect(expected).toMatchObject(result);
+
+  return buildPlatforms(filename, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}`, { encoding: "utf8" }).then(JSON.parse);
+    expect(expected).toMatchObject(JSON.parse(result));
+  });
 });
 
-test("a ref that points to additional refs should resolve", () => {
+test("a ref that points to additional refs should resolve", async () => {
   const filename = "multi-ref.json";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const expected = helpers.fileToJSON(`./tests/expected/${filename}`);
-  const result = helpers.fileToJSON(path.join(helpers.outputDir, filename));
-  expect(expected).toMatchObject(result);
+
+  return buildPlatforms(filename, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}`, { encoding: "utf8" }).then(JSON.parse);
+    expect(expected).toMatchObject(JSON.parse(result));
+  });
 });
 
-test("should handle multi nested reference values", () => {
+test("should handle multi nested reference values", async () => {
   const filename = "multi-depth.json";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const expected = helpers.fileToJSON(`./tests/expected/${filename}`);
-  const result = helpers.fileToJSON(path.join(helpers.outputDir, filename));
-  expect(expected).toMatchObject(result);
+
+  return buildPlatforms(filename, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}`, { encoding: "utf8" }).then(JSON.parse);
+    expect(expected).toMatchObject(JSON.parse(result));
+  });
 });
 
-test("should handle multi nested values", () => {
+test("should handle multi nested values", async () => {
   const filename = "multi-nested.json";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const expected = helpers.fileToJSON(`./tests/expected/${filename}`);
-  const result = helpers.fileToJSON(path.join(helpers.outputDir, filename));
-  expect(expected).toMatchObject(result);
+
+  return buildPlatforms(filename, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}`, { encoding: "utf8" }).then(JSON.parse);
+    expect(expected).toMatchObject(JSON.parse(result));
+  });
 });
 
-test("should keep included uuid", () => {
+test("should keep included uuid", async () => {
   const filename = "uuid.json";
-  const sd = StyleDictionary.extend(generateConfig(filename));
-  sd.buildAllPlatforms();
-  const expected = helpers.fileToJSON(`./tests/expected/${filename}`);
-  const result = helpers.fileToJSON(path.join(helpers.outputDir, filename));
-  expect(expected).toMatchObject(result);
+
+  return buildPlatforms(filename, generateConfig(filename)).then(async (result) => {
+    const expected = await readFile(`./tests/expected/${filename}`, { encoding: "utf8" }).then(JSON.parse);
+    expect(expected).toMatchObject(JSON.parse(result));
+  });
 });

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`drover format meets basic requirements 1`] = `
-Object {
-  "KEYS": Object {
+{
+  "KEYS": {
     "COLOR_ALIASES": "colorAliases",
     "COLOR_SEMANTICS": "colorSemantics",
     "COLOR_THEMES": "colorThemes",
@@ -11,8 +11,8 @@ Object {
     "DIMENSION_COMPONENT_LAYOUT_TOKENS": "componentLayoutTokens",
     "DIMENSION_LAYOUT_TOKENS": "layoutTokens",
   },
-  "colorThemes": Object {
-    "dark": Object {
+  "colorThemes": {
+    "dark": {
       "accent-color-100": "rgb(235, 235, 235)",
       "black": "rgb(0, 0, 0)",
       "blackAlias": "rgb(0, 0, 0)",
@@ -21,7 +21,7 @@ Object {
       "neutral-background-color-default": "rgb(112, 112, 112)",
       "transparent-black-200": "rgba(0, 0, 0, 0.10)",
     },
-    "darkest": Object {
+    "darkest": {
       "accent-color-100": "rgb(235, 235, 235)",
       "black": "rgb(0, 0, 0)",
       "blackAlias": "rgb(0, 0, 0)",
@@ -30,7 +30,7 @@ Object {
       "neutral-background-color-default": "rgb(106, 106, 106)",
       "transparent-black-200": "rgba(0, 0, 0, 0.10)",
     },
-    "light": Object {
+    "light": {
       "accent-color-100": "rgb(34, 34, 34)",
       "black": "rgb(0, 0, 0)",
       "blackAlias": "rgb(0, 0, 0)",
@@ -40,7 +40,7 @@ Object {
       "transparent-black-200": "rgba(0, 0, 0, 0.10)",
     },
   },
-  "dimensions": Object {
+  "dimensions": {
     "another-corner-radius": "2px",
     "base-corner-radius": "2px",
     "component-pill-edge-to-visual-100": "17px",
@@ -54,8 +54,8 @@ Object {
 `;
 
 exports[`drover format supports prefix 1`] = `
-Object {
-  "KEYS": Object {
+{
+  "KEYS": {
     "COLOR_ALIASES": "colorAliases",
     "COLOR_SEMANTICS": "colorSemantics",
     "COLOR_THEMES": "colorThemes",
@@ -64,18 +64,18 @@ Object {
     "DIMENSION_COMPONENT_LAYOUT_TOKENS": "componentLayoutTokens",
     "DIMENSION_LAYOUT_TOKENS": "layoutTokens",
   },
-  "colorThemes": Object {
-    "dark": Object {
+  "colorThemes": {
+    "dark": {
       "aprefix-black": "rgb(0, 0, 0)",
     },
-    "darkest": Object {
+    "darkest": {
       "aprefix-black": "rgb(0, 0, 0)",
     },
-    "light": Object {
+    "light": {
       "aprefix-black": "rgb(0, 0, 0)",
     },
   },
-  "dimensions": Object {
+  "dimensions": {
     "description": "A scale stop of a given size",
     "scale-factor": "1",
   },
@@ -85,8 +85,8 @@ Object {
 `;
 
 exports[`drover multi level with repeating color themes 1`] = `
-Object {
-  "KEYS": Object {
+{
+  "KEYS": {
     "COLOR_ALIASES": "colorAliases",
     "COLOR_SEMANTICS": "colorSemantics",
     "COLOR_THEMES": "colorThemes",
@@ -95,8 +95,8 @@ Object {
     "DIMENSION_COMPONENT_LAYOUT_TOKENS": "componentLayoutTokens",
     "DIMENSION_LAYOUT_TOKENS": "layoutTokens",
   },
-  "colorThemes": Object {
-    "dark": Object {
+  "colorThemes": {
+    "dark": {
       "accent-background-color-default": "rgb(3, 103, 224)",
       "accent-color-500": "rgb(3, 103, 224)",
       "accent-color-600": "rgb(19, 121, 243)",
@@ -108,7 +108,7 @@ Object {
       "indigo-600": "rgb(104, 109, 244)",
       "indigo-900": "rgb(167, 170, 255)",
     },
-    "darkest": Object {
+    "darkest": {
       "accent-background-color-default": "rgb(6, 108, 231)",
       "accent-color-500": "rgb(0, 92, 200)",
       "accent-color-600": "rgb(6, 108, 231)",
@@ -120,7 +120,7 @@ Object {
       "indigo-600": "rgb(90, 96, 235)",
       "indigo-900": "rgb(153, 157, 255)",
     },
-    "light": Object {
+    "light": {
       "accent-background-color-default": "rgb(2, 101, 220)",
       "accent-color-500": "rgb(120, 187, 250)",
       "accent-color-600": "rgb(89, 167, 246)",
@@ -133,7 +133,7 @@ Object {
       "indigo-900": "rgb(82, 88, 228)",
     },
   },
-  "dimensions": Object {
+  "dimensions": {
     "description": "A scale stop of a given size",
     "scale-factor": "1",
   },
