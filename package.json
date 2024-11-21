@@ -1,13 +1,13 @@
 {
   "name": "style-dictionary-sets",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "Style Dictionary transforms to add support for sets for things like responsive design.",
-  "main": "index.js",
+  "type": "module",
+  "module": "index.js",
   "scripts": {
-    "test": "jest",
-    "test-watch": "jest --runInBand --watch",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test-watch": "node --experimental-vm-modules ./node_modules/.bin/jest --runInBand --watch",
     "pre-commit": "lint-staged",
-    "prepare": "husky install",
     "semantic-release": "semantic-release"
   },
   "repository": {
@@ -15,23 +15,33 @@
     "url": "https://github.com/GarthDB/style-dictionary-sets-transform.git"
   },
   "author": "Garth Braithwaite <garthdb@gmail.com> (http://garthdb.com/)",
+  "contributors": [
+    "castastrophe <castastrophe@users.noreply.github.com>"
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/GarthDB/style-dictionary-sets-transform/issues"
   },
   "homepage": "https://github.com/GarthDB/style-dictionary-sets-transform#readme",
   "dependencies": {
-    "deepmerge": "^4.2.2"
+    "deepmerge": "^4.3.1"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
-    "@commitlint/cli": "^16.2.0",
-    "@commitlint/config-conventional": "^16.2.1",
-    "fs-extra": "^10.0.1",
-    "husky": "^7.0.4",
-    "jest": "^27.5.1",
-    "lint-staged": "^12.3.4",
-    "prettier": "^2.5.1",
-    "semantic-release": "^19.0.5",
-    "style-dictionary": "^3.7.1"
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "fs-extra": "^11.2.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.2.10",
+    "lodash-es": "^4.17.21",
+    "prettier": "^3.2.5",
+    "semantic-release": "^24.2.0",
+    "style-dictionary": "^4.2.0"
+  },
+  "peerDependencies": {
+    "style-dictionary": ">=3 <5"
   }
 }

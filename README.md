@@ -3,7 +3,7 @@
 
 # Style Dictionary Sets
 
-This is a collection of transforms and formatters for adding support for `sets` to [Style Dictionary](https://amzn.github.io/style-dictionary/#/).
+This is a collection of transforms and formatters for adding support for `sets` to [Style Dictionary](https://styledictionary.com).
 
 ## Installation
 
@@ -26,12 +26,12 @@ npm install style-dictionary-sets
 In the `config.js` bring in the transform, register it to Style Dictionary and add it to the `transforms` array.
 
 ```js
-const StyleDictionary = require("style-dictionary");
-const AttributeSetsTransform = require("style-dictionary-sets").AttributeSetsTransform;
+import StyleDictionary from "style-dictionary";
+import { AttributeSetsTransform } from "style-dictionary-sets";
 
 StyleDictionary.registerTransform(AttributeSetsTransform);
 
-module.exports = {
+export default {
   source: ["tokens/**/*.json"],
   platforms: {
     JSON: {

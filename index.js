@@ -1,15 +1,6 @@
-const JsonSetsFormatter = require("./lib/json-sets-formatter");
-const AttributeSetsTransform = require("./lib/attribute-sets-transform");
-const NameKebabTransfom = require("./lib/name-kebab-transform");
-const CSSSetsFormatter = require("./lib/css-sets-formatter.js");
-const CSSOpenTypeTransform = require("./lib/css-font-open-type-transform.js");
-const DroverJsonFormatter = require("./lib/drover-json-formatter.js");
-
-module.exports = {
-  JsonSetsFormatter,
-  AttributeSetsTransform,
-  NameKebabTransfom,
-  CSSSetsFormatter,
-  CSSOpenTypeTransform,
-  DroverJsonFormatter,
-};
+export { default as JsonSetsFormatter } from "./lib/json-sets-formatter";
+export { default as AttributeSetsTransform } from "./lib/attribute-sets-transform";
+export { default as NameKebabTransfom } from "./lib/name-kebab-transform";
+export { default as CSSSetsFormatter } from "./lib/css-sets-formatter.js";
+export { default as CSSOpenTypeTransform } from "./lib/css-font-open-type-transform.js";
+export { default as DroverJsonFormatter } from "./lib/drover-json-formatter.js";
